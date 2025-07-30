@@ -84,6 +84,9 @@ public class GunSystem : MonoBehaviour
             if (rayHit.collider.CompareTag("Enemy"))
                 rayHit.collider.GetComponent<ShootingAi>().TakeDamage(damage);
         }
+        //Debuging to see the ray cast as visual feedback
+        Debug.DrawRay(fpsCam.transform.position, direction * range, Color.red, 1f);
+
 
         // Trigger rotational shake on shooting if available
         if (perlinCameraShake != null)
