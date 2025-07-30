@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using TMPro;
 
 public class GunSystem : MonoBehaviour
@@ -22,11 +22,11 @@ public class GunSystem : MonoBehaviour
     // Graphics
     public GameObject muzzleFlash, bulletHoleGraphic;
 
-    // Replaced CamShake with PerlinCameraShake
+    // Use PerlinCameraShake
     private PerlinCameraShake perlinCameraShake;
-    public float camShakeMagnitude = 0.1f;
-    public float camShakeFrequency = 20f;
-    public float camShakeDuration = 0.3f;
+    public float camShakeMagnitude = 2f;
+    public float camShakeFrequency = 5f;
+    public float camShakeDuration = 0.5f;
 
     public TextMeshProUGUI text;
 
@@ -35,7 +35,7 @@ public class GunSystem : MonoBehaviour
         bulletsLeft = magazineSize;
         readyToShoot = true;
 
-        // Find the PerlinCameraShake component on the same GameObject or child
+        // Try to get the PerlinCameraShake component from the fpsCam
         perlinCameraShake = fpsCam.GetComponent<PerlinCameraShake>();
         if (perlinCameraShake == null)
         {
@@ -85,10 +85,12 @@ public class GunSystem : MonoBehaviour
                 rayHit.collider.GetComponent<ShootingAi>().TakeDamage(damage);
         }
 
-        // Trigger our Perlin noise camera shake if available
+        // Trigger rotational shake on shooting if available
         if (perlinCameraShake != null)
         {
-            perlinCameraShake.TriggerShake(camShakeDuration, camShakeMagnitude, camShakeFrequency);
+            perlinCameraShake.TriggerRotationalShake(camShakeMagnitude, camShakeDuration, camShakeFrequency);
+            // If you want positional shake instead, use:
+            // perlinCameraShake.TriggerPositionalShake(camShakeMagnitude, camShakeDuration, camShakeFrequency);
         }
 
         // Graphics
